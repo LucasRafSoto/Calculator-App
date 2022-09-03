@@ -2,19 +2,39 @@ package operand;
 
 public class Operand {
 
-  public Operand( String token ) {
+  private int i;
 
+  public Operand(String token) {
+    System.out.println("Were in");
+    setI(token);
+    System.out.println(i);
   }
 
-  public Operand( int value ) {
+  public Operand(int value) {
+    this.i = value;
+  }
 
+  public void setI(String tokenConnector) {
+    int temp = Integer.parseInt(tokenConnector);
+    System.out.println(temp);
+    this.i = temp;
   }
 
   public int getValue() {
-    return 0;
+    System.out.println(i);
+    return this.i;
   }
 
-  public static boolean check( String token ) {
+  public static boolean check(String token) {
+    if (!token.isEmpty()) {
+      try {
+        int i = Integer.parseInt(token);
+        return true;
+      } catch (NumberFormatException err) {
+        System.out.println(err);
+        return false;
+      }
+    }
     return false;
   }
 }

@@ -73,7 +73,8 @@ public class EvaluatorTest {
     void testProperStackUsage() {
         Evaluator evaluator = new Evaluator();
 
-        // Stacks should be emptied and in a valid state after the first evaluation occurs,
+        // Stacks should be emptied and in a valid state after the first evaluation
+        // occurs,
         // so the second evaluation should run without exception and provide
         assertEquals(6, evaluator.eval("1+2+3"));
         assertEquals(1, evaluator.eval("10-8-1"));

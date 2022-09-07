@@ -5,23 +5,19 @@ public class Operand {
   private int i;
 
   public Operand(String token) {
-    System.out.println("Were in");
-    setI(token);
-    System.out.println(i);
+    i = convertToInt(token);
   }
 
   public Operand(int value) {
     this.i = value;
   }
 
-  public void setI(String tokenConnector) {
+  public int convertToInt(String tokenConnector) {
     int temp = Integer.parseInt(tokenConnector);
-    System.out.println(temp);
-    this.i = temp;
+    return temp;
   }
 
   public int getValue() {
-    System.out.println(i);
     return this.i;
   }
 
@@ -31,7 +27,6 @@ public class Operand {
         int i = Integer.parseInt(token);
         return true;
       } catch (NumberFormatException err) {
-        System.out.println(err);
         return false;
       }
     }

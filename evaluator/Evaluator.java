@@ -7,56 +7,88 @@ import operator.Operator;
 import java.util.*;
 
 public class Evaluator {
+  private int i = 0;
   private Stack<Operand> operandStack;
   private Stack<Operator> operatorStack;
 
   private StringTokenizer tokenizer;
   private static final String DELIMITERS = "+-*^/() ";
 
+  public void executingOperation() {
+    Operator oldOpr = operatorStack.pop();
+    Operand op2 = operandStack.pop();
+    Operand op1 = operandStack.pop();
+    operandStack.push(oldOpr.execute(op1, op2));
+  }
+
   public Evaluator() {
     operandStack = new Stack<Operand>();
     operatorStack = new Stack<Operator>();
   }
 
+
   public int eval(String expression) {
     String token;
+    int temp;
 
-    // The 3rd argument is true to indicate that the delimiters should be used
-    // as tokens, too. But, we'll need to remember to filter out spaces.
     this.tokenizer = new StringTokenizer(expression, DELIMITERS, true);
 
     while (this.tokenizer.hasMoreTokens()) {
+      i++;
+      System.out.println("times through the while loop with more tokens: "+i);
       // filter out spaces
       if (!(token = this.tokenizer.nextToken()).equals(" ")) {
         // check if token is an operand
         if (Operand.check(token)) {
           operandStack.push(new Operand(token));
+          System.out.println("Top of Operand Stack: " + operandStack.peek().getValue());
         } else {
           if (!Operator.check(token)) {
             System.out.println("*****invalid token******");
             System.exit(1);
           }
 
-          // TODO Operator is abstract - this line will need to be fixed:
-          // ( The Operator class should contain an instance of a HashMap,
-          // and values will be instances of the Operators. See Operator class
-          // skeleton for an example. )
-          // Operator newOperator = new Operator(); // new Operator( token );
           Operator.sortOperation(token);
-          Operator newOperator = null;
+          Operator newOperator = operator.Operator.getOperator(token);
+          System.out.println("new operator: "+newOperator.toStringOperator());
 
-          while (operatorStack.peek().priority() >= newOperator.priority()) {
-            // note that when we eval the expression 1 - 2 we will
-            // push the 1 then the 2 and then do the subtraction operation
-            // This means that the first number to be popped is the
-            // second operand, not the first operand - see the following code
-            Operator oldOpr = operatorStack.pop();
-            Operand op2 = operandStack.pop();
-            Operand op1 = operandStack.pop();
-            operandStack.push(oldOpr.execute(op1, op2));
+          if (!operatorStack.isEmpty()){
+            if (token.equals("(")){
+              operatorStack.push(newOperator);
+            } 
+            else if(token.equals(")")){
+              while(!operatorStack.peek().toStringOperator().equals("(")){
+                System.out.println(operatorStack.peek().toStringOperator());
+                System.out.println("executing Parenthesis");
+                executingOperation();
+                System.out.println("operator stack after execution: "+operatorStack.peek().toStringOperator());
+                System.out.println("top of the operand stack: "+operandStack.peek().getValue());
+                if (operatorStack.peek().toStringOperator().equals("(")){
+                  break;
+                }
+              }
+              System.out.println("out of loop and popping )");
+              operatorStack.pop();
+            }
+            else {
+              System.out.println("op stack priority: "+operatorStack.peek().priority());
+              System.out.println("new op priority: "+newOperator.priority());
+              while (operatorStack.peek().priority() >= newOperator.priority() && operatorStack.peek().toStringOperator() != "(") {
+                executingOperation();
+                System.out.println("in");
+                System.out.println(operandStack.peek().getValue());
+                if (operatorStack.isEmpty()){
+                  break;
+                }
+              }
+              operatorStack.push(newOperator);
+              System.out.println(operatorStack.peek().toStringOperator());
+            }
           }
-
-          operatorStack.push(newOperator);
+          else {
+            operatorStack.push(newOperator);
+            System.out.println(operatorStack.peek().toStringOperator());
+          }
         }
       }
     }
@@ -73,9 +105,13 @@ public class Evaluator {
     // then executes the while loop; also, move the stacks out of the main
     // method
 
-    return 0;
+    while (!operatorStack.isEmpty()){
+      executingOperation();
+    }
+    temp = operandStack.pop().getValue();
+    System.out.println("this is the answer: " + temp);
+    return temp;
   }
-
   /**
    * Class to help test your Evaluator:
    * javac EvaluatorTester

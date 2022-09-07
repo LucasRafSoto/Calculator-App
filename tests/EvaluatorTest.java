@@ -38,7 +38,7 @@ public class EvaluatorTest {
     void testComplexExpressionWithNegativeResult() {
         Evaluator evaluator = new Evaluator();
 
-        assertEquals(7, evaluator.eval("2-(3/10)+2-5"));
+        assertEquals(-1, evaluator.eval("2-(3/10)+2-5"));
     }
 
     @Test

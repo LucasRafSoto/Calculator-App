@@ -2,104 +2,236 @@ package operator;
 
 import java.util.HashMap;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import operand.Operand;
 
 public abstract class Operator {
-  // The Operator class should contain an instance of a HashMap
-  // This map will use keys as the tokens we're interested in,
-  // and values will be instances of the Operators.
-
-  // Example:
-  // Where does this declaration go? What should its access level be?
-  // Class or instance variable? Is this the right declaration?
-  // HashMap operators = new HashMap();
-  // operators.put( "+", new AdditionOperator() );
-  // operators.put( "-", new SubtractionOperator() );
 
   private static HashMap<String, Operator> operators = new HashMap<String, Operator>();
 
   public abstract int priority();
+  public abstract String toStringOperator();
 
   public abstract Operand execute(Operand op1, Operand op2);
 
   public static void sortOperation(String token) {
-    System.out.println("Good");
     if (check(token)) {
       switch (token) {
-        case "+": {
-          operators.put(token, new AdditionOperator());
-          System.out.println("Addition in map");
-        }
         case "-": {
           operators.put(token, new SubstractionOperator());
-          System.out.println("Sub in map");
+          break;
         }
-        case "/": {
-          operators.put(token, new DivisionOperator());
+        case "+": {
+          operators.put(token, new AdditionOperator());
+          break;
         }
         case "*": {
           operators.put(token, new MultiplicationOperator());
+          break;
+        }
+        case "/": {
+          operators.put(token, new DivisionOperator());
+          break;
+        }
+        case "^": {
+          operators.put(token, new ExponentialOperator());
+          break;
+        }
+        case "(": {
+          operators.put(token, new OpeningParenthetialOperator());
+          break;
+        }
+        case ")": {
+          operators.put(token, new ClosingParentheticalOperator());
+          break;
+        }
+        default: {
+          break;
         }
       }
     }
   }
-
   public static boolean check(String token) {
 
     if (!token.isEmpty() && !Operand.check(token)) {
-      if (token.indexOf("+-*/^") != 1) {
-        return true;
-      } else {
+      try {
+        if (token.indexOf("+-*/^") != 1) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch(NumberFormatException err){
         return false;
       }
-    } else {
+    }  
+    else{
       return false;
     }
   }
 
-  // public static HashMap getCase(String token) {
-  // return Case;
-  // }
+  public static Operator getOperator(String token){
+    Operator temp = operators.get(token);
+    operators.remove(token);
+    return temp;
+  }
+
 }
 
 class AdditionOperator extends Operator {
+  private int priority;
+  private String stringify = "+";
+
+  public AdditionOperator(){
+    priority = 2;
+  }
   public int priority() {
-    return 2;
+    return priority;
+  }
+  public String toStringOperator() {
+    return stringify;
   }
 
   public Operand execute(Operand op1, Operand op2) {
-    return execute(op1, op2);
+    System.out.println("executing addition");
+    int temp = op1.getValue() + op2.getValue();
+    String stringTemp = String.valueOf(temp);
+    Operand temperaryOperand = new Operand(stringTemp);
+    return temperaryOperand;
   }
 }
 
 class SubstractionOperator extends Operator {
+  private int priority;
+  private String stringify = "-";
+
+  public SubstractionOperator(){
+    priority = 2;
+  }
   public int priority() {
-    return 2;
+    return priority;
+  }
+  public String toStringOperator() {
+    return stringify;
   }
 
   public Operand execute(Operand op1, Operand op2) {
-    return execute(op2, op1);
+    System.out.println("executing subtraction");
+    int temp = op1.getValue() - op2.getValue();
+    String stringTemp = String.valueOf(temp);
+    Operand temperaryOperand = new Operand(stringTemp);
+    return temperaryOperand;
   }
 }
 
 class MultiplicationOperator extends Operator {
+  private int priority;
+  private String stringify = "*";
+
+  public MultiplicationOperator(){
+    priority = 3;
+  }
   public int priority() {
-    return 3;
+    return priority;
+  }
+  public String toStringOperator() {
+    return stringify;
   }
 
   public Operand execute(Operand op1, Operand op2) {
-    return execute(op1, op2);
+    System.out.println("executing multiplication");
+    int temp = op1.getValue() * op2.getValue();
+    String stringTemp = String.valueOf(temp);
+    System.out.println("answer to multiplication: "+stringTemp);
+    Operand temperaryOperand = new Operand(stringTemp);
+    return temperaryOperand;
   }
 }
 
 class DivisionOperator extends Operator {
+  private int priority;
+  private String stringify = "/";
+
+  public DivisionOperator(){
+    priority = 3;
+  }
   public int priority() {
-    return 3;
+    return priority;
+  }
+  public String toStringOperator() {
+    return stringify;
   }
 
   public Operand execute(Operand op1, Operand op2) {
-    return execute(op1, op2);
+    System.out.println("executing division");
+    int temp = op1.getValue() / op2.getValue();
+    System.out.println(temp);
+    String stringTemp = String.valueOf(temp);
+    Operand temperaryOperand = new Operand(stringTemp);
+    return temperaryOperand;
+  }
+}
+
+class ExponentialOperator extends Operator {
+  private int priority;
+  private String stringify = "^";
+
+  public ExponentialOperator(){
+    priority = 4;
+  }
+  public int priority() {
+    return priority;
+  }
+  public String toStringOperator() {
+    return stringify;
+  }
+
+  public Operand execute(Operand op1, Operand op2) {
+    System.out.println("executing exponent");
+    int base = op1.getValue();
+    int power = op2.getValue();
+    int temp = 1;
+    for (int i = 1; i<=power; i++){
+      temp*=base;
+    }
+    String stringTemp = String.valueOf(temp);
+    Operand temperaryOperand = new Operand(stringTemp);
+    return temperaryOperand;
+  }
+}
+
+class OpeningParenthetialOperator extends Operator {
+  private int priority;
+  private String stringify = "(";
+
+  public OpeningParenthetialOperator(){
+    priority = 1;
+  }
+  public int priority() {
+    return priority;
+  }
+  public String toStringOperator(){
+    return stringify;
+  }
+
+  public Operand execute(Operand op1, Operand op2) {
+    return op1;
+  }
+}
+
+class ClosingParentheticalOperator extends Operator {
+  private int priority;
+  private String stringify = ")";
+
+  public ClosingParentheticalOperator(){
+    priority = 1;
+  }
+  public int priority() {
+    return priority;
+  }
+  public String toStringOperator() {
+    return stringify;
+  }
+
+  public Operand execute(Operand op1, Operand op2) {
+    return op1;
   }
 }

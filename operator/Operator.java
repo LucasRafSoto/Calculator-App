@@ -9,6 +9,7 @@ public abstract class Operator {
   private static HashMap<String, Operator> operators = new HashMap<String, Operator>();
 
   public abstract int priority();
+
   public abstract String toStringOperator();
 
   public abstract Operand execute(Operand op1, Operand op2);
@@ -50,6 +51,7 @@ public abstract class Operator {
       }
     }
   }
+
   public static boolean check(String token) {
 
     if (!token.isEmpty() && !Operand.check(token)) {
@@ -59,16 +61,15 @@ public abstract class Operator {
         } else {
           return false;
         }
-      } catch(NumberFormatException err){
+      } catch (NumberFormatException err) {
         return false;
       }
-    }  
-    else{
+    } else {
       return false;
     }
   }
 
-  public static Operator getOperator(String token){
+  public static Operator getOperator(String token) {
     Operator temp = operators.get(token);
     operators.remove(token);
     return temp;
@@ -80,18 +81,19 @@ class AdditionOperator extends Operator {
   private int priority;
   private String stringify = "+";
 
-  public AdditionOperator(){
+  public AdditionOperator() {
     priority = 2;
   }
+
   public int priority() {
     return priority;
   }
+
   public String toStringOperator() {
     return stringify;
   }
 
   public Operand execute(Operand op1, Operand op2) {
-    System.out.println("executing addition");
     int temp = op1.getValue() + op2.getValue();
     String stringTemp = String.valueOf(temp);
     Operand temperaryOperand = new Operand(stringTemp);
@@ -103,18 +105,19 @@ class SubstractionOperator extends Operator {
   private int priority;
   private String stringify = "-";
 
-  public SubstractionOperator(){
+  public SubstractionOperator() {
     priority = 2;
   }
+
   public int priority() {
     return priority;
   }
+
   public String toStringOperator() {
     return stringify;
   }
 
   public Operand execute(Operand op1, Operand op2) {
-    System.out.println("executing subtraction");
     int temp = op1.getValue() - op2.getValue();
     String stringTemp = String.valueOf(temp);
     Operand temperaryOperand = new Operand(stringTemp);
@@ -126,21 +129,21 @@ class MultiplicationOperator extends Operator {
   private int priority;
   private String stringify = "*";
 
-  public MultiplicationOperator(){
+  public MultiplicationOperator() {
     priority = 3;
   }
+
   public int priority() {
     return priority;
   }
+
   public String toStringOperator() {
     return stringify;
   }
 
   public Operand execute(Operand op1, Operand op2) {
-    System.out.println("executing multiplication");
     int temp = op1.getValue() * op2.getValue();
     String stringTemp = String.valueOf(temp);
-    System.out.println("answer to multiplication: "+stringTemp);
     Operand temperaryOperand = new Operand(stringTemp);
     return temperaryOperand;
   }
@@ -150,20 +153,20 @@ class DivisionOperator extends Operator {
   private int priority;
   private String stringify = "/";
 
-  public DivisionOperator(){
+  public DivisionOperator() {
     priority = 3;
   }
+
   public int priority() {
     return priority;
   }
+
   public String toStringOperator() {
     return stringify;
   }
 
   public Operand execute(Operand op1, Operand op2) {
-    System.out.println("executing division");
     int temp = op1.getValue() / op2.getValue();
-    System.out.println(temp);
     String stringTemp = String.valueOf(temp);
     Operand temperaryOperand = new Operand(stringTemp);
     return temperaryOperand;
@@ -174,23 +177,24 @@ class ExponentialOperator extends Operator {
   private int priority;
   private String stringify = "^";
 
-  public ExponentialOperator(){
+  public ExponentialOperator() {
     priority = 4;
   }
+
   public int priority() {
     return priority;
   }
+
   public String toStringOperator() {
     return stringify;
   }
 
   public Operand execute(Operand op1, Operand op2) {
-    System.out.println("executing exponent");
     int base = op1.getValue();
     int power = op2.getValue();
     int temp = 1;
-    for (int i = 1; i<=power; i++){
-      temp*=base;
+    for (int i = 1; i <= power; i++) {
+      temp *= base;
     }
     String stringTemp = String.valueOf(temp);
     Operand temperaryOperand = new Operand(stringTemp);
@@ -202,13 +206,15 @@ class OpeningParenthetialOperator extends Operator {
   private int priority;
   private String stringify = "(";
 
-  public OpeningParenthetialOperator(){
+  public OpeningParenthetialOperator() {
     priority = 1;
   }
+
   public int priority() {
     return priority;
   }
-  public String toStringOperator(){
+
+  public String toStringOperator() {
     return stringify;
   }
 
@@ -221,12 +227,14 @@ class ClosingParentheticalOperator extends Operator {
   private int priority;
   private String stringify = ")";
 
-  public ClosingParentheticalOperator(){
+  public ClosingParentheticalOperator() {
     priority = 1;
   }
+
   public int priority() {
     return priority;
   }
+
   public String toStringOperator() {
     return stringify;
   }

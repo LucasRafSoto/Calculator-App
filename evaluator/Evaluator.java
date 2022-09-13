@@ -21,75 +21,87 @@ public class Evaluator {
     operandStack.push(oldOpr.execute(op1, op2));
   }
 
+  public void scanningForOps(String token) {
+    if (Operand.check(token)) {
+      operandStack.push(new Operand(token));
+    } else {
+      Operator newOperator = evaluatingNewOperator(token);
+
+      utilizingNewOperator(newOperator);
+    }
+  }
+
+  public Operator evaluatingNewOperator(String token) {
+    if (!Operator.check(token)) {
+      System.out.println("*****invalid token******");
+      System.exit(1);
+    }
+
+    Operator.sortOperation(token);
+    Operator newOperator = operator.Operator.getOperator(token);
+    return newOperator;
+  }
+
+  public void utilizingNewOperator(Operator operate) {
+    if (!operatorStack.isEmpty()) {
+      parentheticalEvaluation(operate);
+    } else {
+      operatorStack.push(operate);
+    }
+  }
+
+  public void parentheticalExecution() {
+    while (!operatorStack.peek().toStringOperator().equals("(")) {
+      executingOperation();
+      if (operatorStack.peek().toStringOperator().equals("(")) {
+        break;
+      }
+    }
+  }
+
+  public void parentheticalEvaluation(Operator operate) {
+    if ((operate.toStringOperator()).equals("(")) {
+      operatorStack.push(operate);
+    } else if ((operate.toStringOperator()).equals(")")) {
+      parentheticalExecution();
+      operatorStack.pop();
+    } else {
+      while (operatorStack.peek().priority() >= operate.priority()
+          && operatorStack.peek().toStringOperator() != "(") {
+        executingOperation();
+        if (operatorStack.isEmpty()) {
+          break;
+        }
+      }
+      operatorStack.push(operate);
+    }
+  }
+
+  public int solution() {
+    int temp;
+
+    while (!operatorStack.isEmpty()) {
+      executingOperation();
+    }
+    temp = operandStack.pop().getValue();
+    return temp;
+  }
+
   public Evaluator() {
     operandStack = new Stack<Operand>();
     operatorStack = new Stack<Operator>();
   }
 
-
   public int eval(String expression) {
     String token;
-    int temp;
 
     this.tokenizer = new StringTokenizer(expression, DELIMITERS, true);
 
     while (this.tokenizer.hasMoreTokens()) {
-      i++;
-      System.out.println("times through the while loop with more tokens: "+i);
-      // filter out spaces
-      if (!(token = this.tokenizer.nextToken()).equals(" ")) {
-        // check if token is an operand
-        if (Operand.check(token)) {
-          operandStack.push(new Operand(token));
-          System.out.println("Top of Operand Stack: " + operandStack.peek().getValue());
-        } else {
-          if (!Operator.check(token)) {
-            System.out.println("*****invalid token******");
-            System.exit(1);
-          }
-
-          Operator.sortOperation(token);
-          Operator newOperator = operator.Operator.getOperator(token);
-          System.out.println("new operator: "+newOperator.toStringOperator());
-
-          if (!operatorStack.isEmpty()){
-            if (token.equals("(")){
-              operatorStack.push(newOperator);
-            } 
-            else if(token.equals(")")){
-              while(!operatorStack.peek().toStringOperator().equals("(")){
-                System.out.println(operatorStack.peek().toStringOperator());
-                System.out.println("executing Parenthesis");
-                executingOperation();
-                System.out.println("operator stack after execution: "+operatorStack.peek().toStringOperator());
-                System.out.println("top of the operand stack: "+operandStack.peek().getValue());
-                if (operatorStack.peek().toStringOperator().equals("(")){
-                  break;
-                }
-              }
-              System.out.println("out of loop and popping )");
-              operatorStack.pop();
-            }
-            else {
-              System.out.println("op stack priority: "+operatorStack.peek().priority());
-              System.out.println("new op priority: "+newOperator.priority());
-              while (operatorStack.peek().priority() >= newOperator.priority() && operatorStack.peek().toStringOperator() != "(") {
-                executingOperation();
-                System.out.println("in");
-                System.out.println(operandStack.peek().getValue());
-                if (operatorStack.isEmpty()){
-                  break;
-                }
-              }
-              operatorStack.push(newOperator);
-              System.out.println(operatorStack.peek().toStringOperator());
-            }
-          }
-          else {
-            operatorStack.push(newOperator);
-            System.out.println(operatorStack.peek().toStringOperator());
-          }
-        }
+      if ((token = this.tokenizer.nextToken()).equals(" ")) {
+        continue;
+      } else {
+        scanningForOps(token);
       }
     }
 
@@ -105,13 +117,9 @@ public class Evaluator {
     // then executes the while loop; also, move the stacks out of the main
     // method
 
-    while (!operatorStack.isEmpty()){
-      executingOperation();
-    }
-    temp = operandStack.pop().getValue();
-    System.out.println("this is the answer: " + temp);
-    return temp;
+    return solution();
   }
+
   /**
    * Class to help test your Evaluator:
    * javac EvaluatorTester

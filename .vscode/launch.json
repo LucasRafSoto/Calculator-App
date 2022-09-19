@@ -9,6 +9,13 @@
       "name": "Launch EvaluatorUI",
       "request": "launch",
       "mainClass": "evaluator.EvaluatorUI",
+      "projectName": "project-1---calculator-BasedKillua_82115222"
+    },
+    {
+      "type": "java",
+      "name": "Launch EvaluatorUI",
+      "request": "launch",
+      "mainClass": "evaluator.EvaluatorUI",
       "projectName": "project-1---calculator-BasedKillua_c09a15e4"
     },
     {

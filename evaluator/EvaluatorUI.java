@@ -36,6 +36,10 @@ public class EvaluatorUI extends JFrame implements ActionListener {
     eventEvaluations.clear();
   }
 
+  private static String removeLastCharacter(String fullExpression) {
+    return fullExpression.substring(0, fullExpression.length() - 1);
+  }
+
   private static int solution;
 
   private static void maintainValidity() {
@@ -51,12 +55,13 @@ public class EvaluatorUI extends JFrame implements ActionListener {
   }
 
   private static void performActions(int eventArray) {
-    if (eventArray != -1) {
+    if (eventArray >= 0 && eventArray <= 19) {
       sortEvents(eventArray);
       maintainValidity();
     }
     if (!eventEvaluations.isEmpty()) {
       expression += eventEvaluations.get(eventArray);
+      eventEvaluations.remove(eventArray);
       txField.setText(expression);
     } else if (eventEvaluations.isEmpty()) {
       txField.setText(expression);
@@ -145,6 +150,7 @@ public class EvaluatorUI extends JFrame implements ActionListener {
         break;
       }
       case 18: {
+        expression = removeLastCharacter(expression);
         break;
       }
       case 19: {

@@ -28,6 +28,7 @@ Author: `Lucas Soto`
 ## System Design
 
 `THIS SECTION SHOULD INCLUDE A GRAPHICAL REPRESENTATION OF THE SYSTEM THAT DISPLAYS PACKAGES, CLASSES, AND RELEVANT INFORMATION DETAILS`
+![Screenshot (1)](https://user-images.githubusercontent.com/100500412/191126174-0463828b-ab4d-4e24-97c7-8c073311d4a5.png)
 
 
 ## Scope of Work

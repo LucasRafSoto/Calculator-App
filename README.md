@@ -59,7 +59,7 @@ Author: `Lucas Soto`
 
 ### What I Learned
 
-`I learned a lot from this assignment. Specifically how to implement an abstract class from another class to create instances of a subclass. Also how to utilize a GUI and instances of objects together.`
+`I learned a lot from this project. Specifically how to implement an abstract class from another class to create instances of a subclass. Also how to utilize a GUI and instances of objects together.`
 
 ### What I Could Do Better
 
@@ -67,4 +67,4 @@ Author: `Lucas Soto`
 
 ### Challenged I Encountered
 
-`Most aspects of this assignment I found very difficult, but over time I was able to understand how to make the code do what I intended it to. By far the most helpful thing was to visualize the problem on a whiteboard, then I could figure out what I had to do for each step.I'd say the most difficult part of the assignment for me was getting the operator class to work properly with the evaluator class, but the whiteboard help me so much.`
+`Many aspects of the project I found quite difficult, but over time I was able to understand how to make the code do what I intended it to. By far the most helpful thing was to visualize the problem on a whiteboard, then I could figure out what I had to do for each step.`

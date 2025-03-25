@@ -1,8 +1,12 @@
 ![Open in Codespaces](https://classroom.github.com/assets/open-in-codespaces-abfff4d4e15f9e1bd8274d9a39a0befe03a0632bb0f153d0ec72ff541cedbe34.svg)
 
-# Assignment 1 Documentation
+# Calculator Documentation
 
 Author: `Lucas Soto`
+
+![CalculatorExpression](https://github.com/user-attachments/assets/49f75aea-c226-4b4d-bedd-10d2b5a14a45)
+![CalculatorSolution](https://github.com/user-attachments/assets/820eed62-b473-453b-b7f7-7177eb8fce35)
+
 
 ## Source Code Links
 
